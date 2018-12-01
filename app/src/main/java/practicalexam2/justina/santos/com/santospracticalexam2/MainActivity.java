@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         lname = findViewById(R.id.lname);
         exam1 = findViewById(R.id.exam1);
         exam2 = findViewById(R.id.exam2);
+        ave = findViewById(R.id.ave);
     }
 
     public void saveExternal(View v)
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         last = lname.getText().toString();
         e1 = exam1.getText().toString();
         e2 = exam2.getText().toString();
-        average = (Double.parseDouble(e1) + Double.parseDouble(e2)) / 2;
+        average = ((Double.parseDouble(e1) + Double.parseDouble(e2)) / 2);
+        String result = new Double(average).toString();
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
@@ -52,26 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-
-        File folder2 = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        File file2 = new File(folder2, "External.txt");
-        FileInputStream fin = null;
-        int c;
-        StringBuffer buffer = new StringBuffer();
-        try {
-            fin = new FileInputStream(file2);
-            while ((c = fin.read()) != -1)
-            {
-                buffer.append((char)c);
-            }
-
-            ave.setText(buffer);
-        } catch (Exception e) {
-            Toast.makeText(this, "ERROR IN READING SD CARD", Toast.LENGTH_SHORT).show();
-        }
-
-
+        ave.setText(result);
 
     }
 
