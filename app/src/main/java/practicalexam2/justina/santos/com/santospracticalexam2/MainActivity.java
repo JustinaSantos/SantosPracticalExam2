@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     EditText fname, lname, exam1, exam2, ave;
     String first, last, e1, e2;
     double average;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         ave = findViewById(R.id.ave);
     }
 
-    public void saveExternal(View v)
-    {
+    public void saveExternal(View v) {
         File folder = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         File file = new File(folder, "External.txt");
         first = fname.getText().toString();
@@ -46,16 +47,29 @@ public class MainActivity extends AppCompatActivity {
             fos.write(String.valueOf(average).getBytes());
         } catch (Exception e) {
             Log.d("Error", "Error writing to file");
-        }
-        finally {
+        } finally {
             try {
                 fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        ave.setText(result);
+        FileInputStream fin = null;
+        int c;
+        StringBuffer buffer = new StringBuffer();
+        try
+        {
+            fin = new FileInputStream(file);
+            while((c = fin.read()) != -1)
+            {
+                buffer.append((char) c);
+            }
+            ave.setText("Your average is: " + result);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
-
 }
